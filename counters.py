@@ -1,30 +1,66 @@
 #! python3.10
 
+# Importa a class "datetime" do módulo "datetime" para manipulação de data e tempo
 from datetime import datetime
+
+# Importa o módulo para ter a função de dar uma pausa na execução do programa por um determinado tempo
 import time
+
+# Importa o módulo que permiti que o programa controle o mouse e teclado
 import pyautogui
+
+# Importa as classes "run", responsável para executar comandos no terminal, e "PIPE", que armazena a saída e entrada do comando do terminal, do módulo "subprocess"
 from subprocess import run, PIPE
+
+# Variável que armazena o atalho das imagens utilizadas para automação
 pasta = '/home/usuario/Documents/Luiz2023/Automacao/'
+
+# Variável para armazenar o atalho de onde serão salvos os prints de tela
 atalho = '/home/usuario/Downloads/'
+
+# Variável para armazernar uma lista de prints realizado no dia
 contlista = []
+
+# Variável para armazenar lista com o número de série das impressoras
 imp = ['ZEQYBQAF4000CFW', 'ZEQYBQAF5001FLM', 'ZDDPB07K110ZF4Y', 'ZEQYBQAF6001RZL', 'ZDDPB07MA174KBW', '6TB443854']
+
+# Variável para armazenar a data formatada: %dia%mês%ano (somente 2 dígitos do ano)
 data = datetime.now().strftime('%d%m%y')
 
+# Função para confirmar se imagem que está salva é a mesma que está sendo exibida na tela do computador
 def verificar(caminho, imgs = [], click = False, vel = 0):
+
+	# Variável responsável para manter o loop até satisfeita condição
 	continua = True
 
+	# Enquanto a variável for verdadeira, continua o loop
 	while continua:
+
+		# Loop para verificar se alguma das imagens passada é exibida na tela do computador
 		for i in range(len(imgs)):
 			try:
+				# Caso seja localizada a mesma imagem do arquivo na tela do computador, a variável armazena as coordenadas encontradas x (largura), y (altura)
 				temp = pyautogui.locateOnScreen(caminho + imgs[i], grayscale=True)
+
+				# Muda valor da variável para sair do loop, uma vez localizada a imagem na tela do computador
 				continua = False
 
+				# Se a variável clicar for verdadeira, simula o click do mouse nas cooerdenadas da imagem localizada (clica no centro da imagem)
 				if click:
+
+					# Realiza uma pausa para ter tempo de ser exibido na tela do computador a consulta com a imagem de onde será realizado o click do mouse
 					time.sleep(vel)
+
+					# Clica nas coordenadas indicada
 					pyautogui.click(temp)
 
+				# Retorno da função com o posição das imagens passada, a que foi localizada na tela do computador
 				return i
+
+			# Caso alguma imagem não seja localiza, mantém a variável de loop com o valor positivo
 			except:
+
+				# Essa linha não influencia em nada mas é necessária, pois o "except" não aceita ficar em branco
 				continua = True
 
 def contadores(IP, impressora, numero):
