@@ -60,7 +60,7 @@ def verificar(caminho, imgs = [], click = False, vel = 0):
 			# Caso alguma imagem não seja localiza, mantém a variável de loop com o valor positivo
 			except:
 
-				# Essa linha não influencia em nada mas é necessária, pois o "except" não aceita ficar em branco
+				# Essa linha não influencia em nada mas é necessária, pois o "except" não aceita ficar em branco sem ação
 				continua = True
 
 def contadores(IP, impressora, numero):
