@@ -21,7 +21,7 @@ atalho = '/home/usuario/Downloads/'
 # Variável para armazernar uma lista de prints realizado no dia
 contlista = []
 
-# Variável para armazenar lista com o número de série das impressoras
+# Variável array para armazenar lista com o número de série das impressoras
 imp = ['ZEQYBQAF4000CFW', 'ZEQYBQAF5001FLM', 'ZDDPB07K110ZF4Y', 'ZEQYBQAF6001RZL', 'ZDDPB07MA174KBW', '6TB443854']
 
 # Variável para armazenar a data formatada: %dia%mês%ano (somente 2 dígitos do ano)
