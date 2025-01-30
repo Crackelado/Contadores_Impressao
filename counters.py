@@ -63,31 +63,61 @@ def verificar(caminho, imgs = [], click = False, vel = 0):
 				# Essa linha não influencia em nada mas é necessária, pois o "except" não aceita ficar em branco sem ação
 				continua = True
 
+# Função para salvar print da tela com a quantidade de impressões realizadas
 def contadores(IP, impressora, numero):
+
+	# Acrescenta um atraso na execução de cada comando do módulo "pyautogui"
 	pyautogui.PAUSE = 1
+
+	# Variável responsável para diferenciar tela de configuração das impressora
+	# Das 6 impressoras somente uma é diferente a tela de consulta
 	action = 0
+
+	# Abre o navegador "Google Chrome" no endereço da impressora
 	run(['/usr/bin/google-chrome-stable', IP])
+
+	# Variável que executa "IF" caso não seja imagem "reload.png" (imagem mostrada quando impressora está offline)
 	opcao = verificar(pasta, ['information.png', 'logoxerox.png', 'reload.png'])
 
+	# Executa ação caso variável "opcao" seja diferente de 2
 	if opcao != 2:
-		
+
+		# Caso encontre imagem "information.png" (presente na consulta de 5 impressoras) executa a ação de clicar no botão
 		if opcao == 0:
 			verificar(pasta, ['information.png'], True, 2)
 
+		# Caso a impressora com número de série específica seja chamada, executar comandos de diferem das demais
 		if impressora == '6TB443854':
+
+			# Pesquisa se algumas das 2 imagens está sendo exibida na tela do computador
 			if verificar(pasta, ['badvanced.png', 'logoxerox.png']) == 0:
+
+				# Clica nas opçãos para prosseguir
 				verificar(pasta, ['badvanced.png'], True)
 				verificar(pasta, ['proceed.png'], True)
 
+			# Verifica se imagem "logoxerox.png" é localizada na tela do computador, caso contrário não executa os próximos comandos
 			verificar(pasta, ['logoxerox.png'])
+
+			# Clica na barra de rolagem para descer uma página
 			pyautogui.click(pyautogui.size().width - 6, pyautogui.size().height / 2 + 200)
+
+			# Clica na opção para prosseguir
 			verificar(pasta, ['busage.png'], True)
+
+			# Verifica se imagem "refresh.png" é localizada na tela do computador, caso contrário não executa os próximos comandos
 			verificar(pasta, ['refresh.png'])
+
+			# Mudar valor da variável
 			action = 2
 
+		# Executa ação se a variável for menor que 2
 		if action < 2:
+
+			# Clica na opção exibida na tela do computador
 			verificar(pasta, ['counters.png'], True, 1)
 
+		# Cria variável temporária para armazenar atalho onde será
 		temp = atalho + impressora + '_' + datetime.now().strftime('%d%m%y%H%M%S') + '_' + numero + '.png'
 		contlista.append(temp)
 		time.sleep(1)
