@@ -117,24 +117,47 @@ def contadores(IP, impressora, numero):
 			# Clica na opção exibida na tela do computador
 			verificar(pasta, ['counters.png'], True, 1)
 
-		# Cria variável temporária para armazenar atalho onde será
+		# Cria variável temporária para armazenar atalho de onde será salvo o arquivo com: pasta + nome impressora + _ data e hora (%dia%mês%ano(2 dígitos)%hora%minutos%segundos) + _ último número do ip + png
 		temp = atalho + impressora + '_' + datetime.now().strftime('%d%m%y%H%M%S') + '_' + numero + '.png'
+
+		# Preenche a lista de prints salvos
 		contlista.append(temp)
+
+		# Realiza uma pausa de 1 segundo para que os dados apareçam corretamente na tela do computador antes do print
 		time.sleep(1)
+
+		# Realiza a captura da tela do computador, começando abaixo da barra de endereços e acima da barra de tarefas
 		img = pyautogui.screenshot(region=(0, int(pyautogui.size()[1] * 0.04), pyautogui.size()[0], int(pyautogui.size()[1] * 0.935)))
+
+		# Salva o print no local designado pela variável
 		img.save(temp)
 
+	# Confirma se há na tela do computador alguma da imagens para continuar o código
 	verificar(pasta, ['information.png', 'refresh.png', 'reload.png'])
+
+	# Executa o atalho do teclado (ctrl+w) para fechar aba aberta
 	pyautogui.hotkey('ctrl', 'w')
 
+# Realiza uma consulta de terminal, na pasta onde foram salvas as imagens, e joga saída para variável
 lista = run(['ls', '-t', atalho], stderr=PIPE, stdout=PIPE)
+
+# Converte os dados da pesquisa em texto e transforma em um array, com o indicador de quebra de linha como final do texto
 lista = lista.stdout.decode('utf-8').split('\n')
+
+# Realiza um loop para pegar somente o final do ip, que foi acresentado ao arquivo antes de salvar
+# Somente das imagens salvas na data atual a execução do script
 lista = ''.join([s[-5] for s in lista if data in s])
+
+# Loop para criar lista somente dos prints que ainda não foram realizados no dia
 lista = [s for s in '234567' if s not in lista]
 
+# Somente entra na condição se a quantidade de prints que não foram encontrados no dia for maior que zero
 if len(lista) > 0:
+
+	# Loop para percorrer lista de prints a realizar e gerar arquivos
 	for a in lista:
 		contadores('10.150.200.20' + a, imp[int(a) - 2], a)
 
+	# Loop para abrir prints salvos no Google Chrome e exibir na tela do computador (Obs.: pode ser utilizado com outro programa)
 	for i in contlista:
 		run(['/usr/bin/google-chrome-stable', '--incognito', i])
